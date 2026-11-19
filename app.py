@@ -1,6 +1,11 @@
+from contextlib import closing
+from html import escape as escape_html
+from io import BytesIO
+import hmac
 import os
 
-from flask import Flask, render_template, request
+from openpyxl import Workbook
+from flask import Flask, Response, render_template, request, send_file
 import sqlite3
 
 app = Flask(__name__)
@@ -57,14 +62,34 @@ def submit():
     <a href="/">Go Back</a>
     """
 
+def check_auth(username, password):
+    configured_username = os.environ.get("ADMIN_USERNAME")
+    configured_password = os.environ.get("ADMIN_PASSWORD")
+    return (
+        configured_username is not None
+        and configured_password is not None
+        and hmac.compare_digest(username, configured_username)
+        and hmac.compare_digest(password, configured_password)
+    )
+
+def authenticate():
+    return Response(
+        "Login Required",
+        401,
+        {"WWW-Authenticate": 'Basic realm="Login Required"'},
+    )
+
 @app.route("/admin")
 def admin():
+    if not os.environ.get("ADMIN_USERNAME") or not os.environ.get("ADMIN_PASSWORD"):
+        return "Admin authentication is not configured", 503
 
-    conn = sqlite3.connect("leads.db")
-    cur = conn.cursor()
+    auth = request.authorization
+    if not auth or not check_auth(auth.username or "", auth.password or ""):
+        return authenticate()
 
-    cur.execute("SELECT * FROM leads")
-    data = cur.fetchall()
+    with closing(sqlite3.connect("leads.db")) as conn:
+        data = conn.execute("SELECT * FROM leads").fetchall()
 
     html = """
     <h1>All Customer Leads</h1>
@@ -80,20 +105,47 @@ def admin():
     """
 
     for row in data:
+        cells = "".join(f"<td>{escape_html(str(value))}</td>" for value in row)
         html += f"""
         <tr>
-        <td>{row[0]}</td>
-        <td>{row[1]}</td>
-        <td>{row[2]}</td>
-        <td>{row[3]}</td>
-        <td>{row[4]}</td>
-        <td>{row[5]}</td>
+        {cells}
         </tr>
         """
 
     html += "</table>"
 
     return html
+
+@app.route("/download")
+def download():
+    if not os.environ.get("ADMIN_USERNAME") or not os.environ.get("ADMIN_PASSWORD"):
+        return "Admin authentication is not configured", 503
+
+    auth = request.authorization
+    if not auth or not check_auth(auth.username or "", auth.password or ""):
+        return authenticate()
+
+    conn = sqlite3.connect("leads.db")
+    workbook = Workbook(write_only=True)
+    sheet = workbook.create_sheet(title="Leads")
+    try:
+        cursor = conn.execute("SELECT * FROM leads")
+        sheet.append([column[0] for column in cursor.description])
+        for row in cursor:
+            sheet.append(row)
+    finally:
+        conn.close()
+
+    output = BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name="leads.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
