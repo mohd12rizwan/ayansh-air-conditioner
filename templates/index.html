@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Ayansh Air Conditioner</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+href="{{ url_for('static',filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+❄ Ayansh Air Conditioner
+</div>
+
+<div>
+📞 8279610802
+</div>
+
+</nav>
+
+<header class="hero">
+
+<h1>AC Repair Near Me in Greater Noida</h1>
+
+<h2>
+24×7 AC, Fridge, Washing Machine &
+Geyser Repair Service
+</h2>
+
+<p>
+Same Day Doorstep Service
+</p>
+
+<a href="tel:+918279610802"
+class="btn call-btn">
+📞 Call Now
+</a>
+
+<a href="https://wa.me/918279610802"
+class="btn whatsapp-btn">
+💬 WhatsApp Now
+</a>
+
+</header>
+
+<section>
+
+<h2>Our Services</h2>
+
+<div class="grid">
+
+<div class="card">❄ AC Repair</div>
+
+<div class="card">🔧 AC Installation</div>
+
+<div class="card">💨 AC Gas Filling</div>
+
+<div class="card">🧊 Fridge Repair</div>
+
+<div class="card">🧺 Washing Machine Repair</div>
+
+<div class="card">🚿 Geyser Repair</div>
+
+</div>
+
+</section>
+
+<section class="why">
+
+<h2>Why Choose Us?</h2>
+
+<p>✅ Same Day Service</p>
+<p>✅ Doorstep Support</p>
+<p>✅ Genuine Parts</p>
+<p>✅ Experienced Technician</p>
+<p>✅ Affordable Pricing</p>
+<p>✅ Emergency Service</p>
+
+</section>
+
+<section>
+
+<h2>Book Your Service</h2>
+
+<form action="/submit" method="POST">
+
+<input
+type="text"
+name="name"
+placeholder="Customer Name"
+required>
+
+<input
+type="tel"
+name="phone"
+placeholder="Mobile Number"
+required>
+
+<select name="service">
+
+<option>AC Repair</option>
+<option>AC Installation</option>
+<option>AC Gas Filling</option>
+<option>Fridge Repair</option>
+<option>Washing Machine Repair</option>
+<option>Geyser Repair</option>
+
+</select>
+
+<input
+type="text"
+name="address"
+placeholder="Address">
+
+<textarea
+name="problem"
+placeholder="Describe Your Problem">
+</textarea>
+
+<button type="submit">
+Book Service
+</button>
+
+</form>
+
+</section>
+
+<section>
+
+<h2>Customer Reviews</h2>
+
+<div class="card">
+⭐⭐⭐⭐⭐ Fast Service
+</div>
+
+<div class="card">
+⭐⭐⭐⭐⭐ Professional Team
+</div>
+
+<div class="card">
+⭐⭐⭐⭐⭐ Affordable Charges
+</div>
+
+</section>
+
+<section>
+
+<h2>Service Areas</h2>
+
+<p>
+Pari Chowk | Surajpur |
+Alpha | Beta |
+Gamma | Knowledge Park |
+Noida Extension
+</p>
+
+</section>
+
+<section class="business-card">
+
+<h2>Business Card</h2>
+
+<img
+src="{{ url_for('static',
+filename='card.jpg') }}"
+class="card-image">
+
+</section>
+
+<footer>
+
+<h3>Ayansh Air Conditioner</h3>
+
+<p>📞 8279610802</p>
+
+<p>
+📍 Shiv Mandir Wali Gali,
+Surajpur, Greater Noida
+</p>
+
+</footer>
+
+<a
+href="https://wa.me/918279610802"
+class="floating-whatsapp">
+💬
+</a>
+
+</body>
+</html>
