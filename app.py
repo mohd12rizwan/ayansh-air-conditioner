@@ -74,9 +74,9 @@ def check_auth(username, password):
 
 def authenticate():
     return Response(
-        "Login Required",
+        "Admin Login Required",
         401,
-        {"WWW-Authenticate": 'Basic realm="Login Required"'},
+        {"WWW-Authenticate": 'Basic realm="Admin Area"'},
     )
 
 @app.route("/admin")
@@ -92,8 +92,36 @@ def admin():
         data = conn.execute("SELECT * FROM leads").fetchall()
 
     html = """
-    <h1>All Customer Leads</h1>
-    <table border='1' cellpadding='10'>
+    <html>
+    <head>
+        <title>Admin Panel</title>
+        <style>
+            body {
+                font-family: Arial;
+                padding: 20px;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th, td {
+                border: 1px solid #ddd;
+                padding: 10px;
+            }
+
+            th {
+                background: #2563eb;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+
+    <h1>Customer Leads</h1>
+
+    <table>
     <tr>
     <th>ID</th>
     <th>Name</th>
@@ -112,7 +140,11 @@ def admin():
         </tr>
         """
 
-    html += "</table>"
+    html += """
+    </table>
+    </body>
+    </html>
+    """
 
     return html
 
