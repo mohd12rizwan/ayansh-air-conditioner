@@ -122,7 +122,7 @@ def home():
 
 
 @app.route("/googlea0851a1e561d0215.html")
-def google_verification():
+def google_verify():
 	return "google-site-verification: googlea0851a1e561d0215.html"
 
 
