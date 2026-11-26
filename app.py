@@ -121,6 +121,11 @@ def home():
 	return render_template_string(HOME_PAGE, booked=request.args.get("booked") == "success")
 
 
+@app.route("/googlea0851a1e561d0215.html")
+def google_verification():
+	return "google-site-verification: googlea0851a1e561d0215.html"
+
+
 @app.route("/submit", methods=["POST"])
 def submit():
 	fields = {
