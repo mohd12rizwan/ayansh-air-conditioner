@@ -105,9 +105,11 @@
 <section class="booking-section" id="booking">
     <h2>Book Service Now</h2>
 
-    {% if request.args.get('booked') == 'success' %}
-        <p class="form-message success">Thank you! Your booking request has been submitted.</p>
-    {% elif request.args.get('booked') == 'invalid' %}
+    {% if booked == "success" %}
+        <div style="background:#d4edda;padding:15px;margin:15px 0;border-radius:8px;">
+            ✅ Booking Submitted Successfully. We will call you soon.
+        </div>
+    {% elif booked == "invalid" %}
         <p class="form-message error">Please fill in your name, mobile number, and service.</p>
     {% endif %}
 
