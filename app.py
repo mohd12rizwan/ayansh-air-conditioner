@@ -126,6 +126,15 @@ def google_verify():
 	return "google-site-verification: googlea0851a1e561d0215.html"
 
 
+@app.route("/robots.txt")
+def robots():
+	robots_txt = """User-agent: *
+Allow: /
+Sitemap: https://ayansh-air-conditioner-1.onrender.com/sitemap.xml
+"""
+	return Response(robots_txt, mimetype="text/plain")
+
+
 @app.route("/submit", methods=["POST"])
 def submit():
 	fields = {
